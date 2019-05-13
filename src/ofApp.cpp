@@ -111,7 +111,7 @@ void ofApp::draw(){
 	drawFbo.begin();
 	drawFade();
 	revealShader.begin();
-	revealShader.setUniform1f("radius", 0.01 + 0.05 * ofNoise(0.5 * t));
+	revealShader.setUniform1f("radius", 0.01 + 0.09 * ofNoise(2.0 * t));
 	revealShader.setUniformTexture("image", img.getTexture(), 0);
 	revealShader.setUniform2fv("lHands", &lHands[0].x, 4);
 	revealShader.setUniform2fv("rHands", &rHands[0].x, 4);
@@ -158,7 +158,7 @@ void ofApp::drawScreenPlane() {
 void ofApp::drawFade() {
 
 	ofPushStyle();
-	ofSetColor(0, 0, 0, 4);
+	ofSetColor(0, 0, 0, 1);
 	ofDrawRectangle(0, 0, w, h);
 	ofPopStyle();
 }
