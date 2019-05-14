@@ -20,38 +20,33 @@ void main()
 
     //  Alpha
     float alpha = 1.0;
+    float maxAlpha = 0.0;
 
-    vec2 lPos = lHands[0] / res.xy;
-    lPos.x *= res.x / res.y;
-    float lAlpha = alpha * (1.0 - smoothstep(radius * 0.9, radius, length(lPos - uv)));
+    for(int i = 0; i < 4; ++i)
+    {
+        if(lHands[i] == -1.0) continue;
 
-    vec2 rPos = rHands[0] / res.xy;
-    rPos.x *= res.x / res.y;
-    float rAlpha = alpha * (1.0 - smoothstep(radius * 0.9, radius, length(rPos - uv)));
+        vec2 lPos = lHands[i] / res.xy;
+        lPos.x *= res.x / res.y;
+        maxAlpha = max(maxAlpha, 1.0 - smoothstep(radius * 0.9, radius, length(lPos - uv)));
+    }
 
-    alpha = max(lAlpha, rAlpha);
+    for(int i = 0; i < 4; ++i)
+    {
+        if(rHands[i] == -1.0) continue;
+
+        vec2 rPos = rHands[i] / res.xy;
+        rPos.x *= res.x / res.y;
+        maxAlpha = max(maxAlpha, 1.0 - smoothstep(radius * 0.9, radius, length(rPos - uv)));
+    }
+
+    alpha = maxAlpha;
 
     //  Color sampling
     vec3 imageColor;
     vec3 imageColorL = texture(image, gl_FragCoord.xy - lOffset).rgb;
     vec3 imageColorR = texture(image, gl_FragCoord.xy - rOffset).rgb;
-    if(lAlpha > rAlpha)
-        imageColor = imageColorL;
-    else if (lAlpha < rAlpha)
-        imageColor = imageColorR;
-    else
-        imageColor = mix(imageColorL, imageColorR, 0.5);
-
-    //  Draw shapes
-    float dist;
-    if(lAlpha > rAlpha) 
-        dist = sqrt(dot(uv - lPos - vec2(0.04, 0.04), uv - lPos - vec2(0.04, 0.04)));
-    else
-        dist = sqrt(dot(uv - rPos - vec2(0.04, 0.04), uv - rPos - vec2(0.04, 0.04)));
-
-    float brightness = 1.0 + smoothstep(0.1, 0.1+0.05, dist) 
-                - smoothstep(0.1-0.05, 0.1, dist);
-    imageColor += brightness * vec3(0.898, 0.290, 0.196);
+    imageColor = mix(imageColorL, imageColorR, 0.5);
 
     fragColor = vec4(imageColor, alpha);
 }

@@ -5,6 +5,9 @@
 //	Addons
 #include "ofxKinectForWindows2.h"
 
+//	Project Headers
+#include "SP_Particles.h"
+
 //	Definitions
 #define KD_WIDTH 512.0
 #define KD_HEIGHT 424.0
@@ -74,4 +77,11 @@ private:
 	//*********************************
 	ofShader revealShader;
 	string revealShaderPath;
+
+	//*********************************
+	//	Particles
+	//*********************************
+	SP_Particles particles;
+	const int sp_x_dim = 75;
+	const int sp_y_dim = 75;
 };

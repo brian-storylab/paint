@@ -51,6 +51,16 @@ void ofApp::setup(){
 	//*********************************
 	revealShaderPath = "shaders/reveal";
 	revealShader.load(revealShaderPath);
+
+	//*********************************
+	//	Particles
+	//*********************************
+	particles.setup(sp_x_dim, sp_y_dim);
+	particles.r = 4.0;
+	particles.color1 = ofColor(54, 152, 163);
+	particles.color2 = ofColor(140, 68, 53);
+	particles.color3 = ofColor(60, 48, 91);
+	particles.initColorTexture();
 }
 
 //--------------------------------------------------------------
@@ -67,6 +77,12 @@ void ofApp::update(){
 	//*********************************
 	kinect.update();
 	auto bodies = kinect.getBodySource()->getBodies();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		lHands[i] = glm::vec2(-1.0, -1.0);
+		rHands[i] = glm::vec2(-1.0, -1.0);
+	}
 
 	int i = 0;
 	for (auto body : bodies)
@@ -86,10 +102,18 @@ void ofApp::update(){
 		if (i == 4) break;
 	}
 
-	if (f % 60 >= 59) {
-		sampleOffset.x = ofRandom(0, w);
-		sampleOffset.y = ofRandom(0, h);
+	if (f % 120 >= 119) {
+		sampleOffset.x = ofRandom(0.15 * w, 0.85 * w);
+		sampleOffset.y = ofRandom(0.15 * h, 0.85 * h);
 	}
+
+	for (int i = 0; i < 4; ++i)
+	{
+		particles.lHands[i] = lHands[i];
+		particles.rHands[i] = rHands[i];
+	}
+	
+	particles.update();
 
 	//*********************************
 	//	Window
@@ -106,12 +130,15 @@ void ofApp::draw(){
 	ofBackground(0);
 
 	//*********************************
-	//	Reveal Layer
+	//	Draw Main
 	//*********************************
 	drawFbo.begin();
 	drawFade();
+
+	particles.draw();
+
 	revealShader.begin();
-	revealShader.setUniform1f("radius", 0.01 + 0.09 * ofNoise(2.0 * t));
+	revealShader.setUniform1f("radius", 0.01 + 0.14 * ofNoise(1.0 * t));
 	revealShader.setUniformTexture("image", img.getTexture(), 0);
 	revealShader.setUniform2fv("lHands", &lHands[0].x, 4);
 	revealShader.setUniform2fv("rHands", &rHands[0].x, 4);
@@ -120,6 +147,7 @@ void ofApp::draw(){
 	revealShader.setUniform2f("res", w, h);
 	drawScreenPlane();
 	revealShader.end();
+
 	drawFbo.end();
 	drawFbo.draw(0, 0);
 
@@ -171,6 +199,7 @@ void ofApp::keyPressed(int key){
 	case 'r':
 		revealShader.unload();
 		revealShader.load(revealShaderPath);
+		particles.reloadShaders();
 		break;
 	default:
 		break;
