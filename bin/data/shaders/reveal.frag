@@ -24,7 +24,7 @@ void main()
 
     for(int i = 0; i < 4; ++i)
     {
-        if(lHands[i] == -1.0) continue;
+        if(lHands[i].x == -1.0) continue;
 
         vec2 lPos = lHands[i] / res.xy;
         lPos.x *= res.x / res.y;
@@ -33,7 +33,7 @@ void main()
 
     for(int i = 0; i < 4; ++i)
     {
-        if(rHands[i] == -1.0) continue;
+        if(rHands[i].x == -1.0) continue;
 
         vec2 rPos = rHands[i] / res.xy;
         rPos.x *= res.x / res.y;

@@ -31,7 +31,7 @@ void main()
     // attraction
     for(int i = 0; i < 4; ++i)
     {
-        if(lHands[i] == -1.0) continue;
+        if(lHands[i].x == -1.0) continue;
 
         vec2 direction = lHands[i] - pos.xy;
         float distSquared = dot(direction, direction);
@@ -42,7 +42,7 @@ void main()
 
     for(int i = 0; i < 4; ++i)
     {
-        if(rHands[i] == -1.0) continue;
+        if(rHands[i].x == -1.0) continue;
 
         vec2 direction = rHands[i] - pos.xy;
         float distSquared = dot(direction, direction);

@@ -56,7 +56,6 @@ void ofApp::setup(){
 	//	Particles
 	//*********************************
 	particles.setup(sp_x_dim, sp_y_dim);
-	particles.r = 4.0;
 	particles.color1 = ofColor(54, 152, 163);
 	particles.color2 = ofColor(140, 68, 53);
 	particles.color3 = ofColor(60, 48, 91);
@@ -107,12 +106,12 @@ void ofApp::update(){
 		sampleOffset.y = ofRandom(0.15 * h, 0.85 * h);
 	}
 
+	//	Pass data to particles
 	for (int i = 0; i < 4; ++i)
 	{
 		particles.lHands[i] = lHands[i];
 		particles.rHands[i] = rHands[i];
 	}
-	
 	particles.update();
 
 	//*********************************
