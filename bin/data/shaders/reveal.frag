@@ -4,6 +4,7 @@ uniform float radius;
 uniform sampler2DRect image;
 uniform vec2 lHands[4];
 uniform vec2 rHands[4];
+uniform vec2 offset;
 uniform vec2 lOffset;
 uniform vec2 rOffset;
 uniform vec2 res;
@@ -28,7 +29,7 @@ void main()
 
         vec2 lPos = lHands[i] / res.xy;
         lPos.x *= res.x / res.y;
-        maxAlpha = max(maxAlpha, 1.0 - smoothstep(radius * 0.9, radius, length(lPos - uv)));
+        maxAlpha = max(maxAlpha, 1.0 - smoothstep(0.0, radius, length(lPos - uv)));
     }
 
     for(int i = 0; i < 4; ++i)
@@ -37,7 +38,7 @@ void main()
 
         vec2 rPos = rHands[i] / res.xy;
         rPos.x *= res.x / res.y;
-        maxAlpha = max(maxAlpha, 1.0 - smoothstep(radius * 0.9, radius, length(rPos - uv)));
+        maxAlpha = max(maxAlpha, 1.0 - smoothstep(0.0, radius, length(rPos - uv)));
     }
 
     alpha = maxAlpha;

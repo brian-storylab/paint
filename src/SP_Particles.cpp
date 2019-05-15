@@ -107,6 +107,18 @@ void SP_Particles::update()
 	t = ofGetElapsedTimef();
 	f = ofGetFrameNum();
 
+	//	Behavior
+	if (t - senseTime > 15.0 && sense == 1.0)
+	{
+		sense *= -1.0;
+		senseTime = t;
+	}
+	else if(t - senseTime > 5.0 && sense == -1.0)
+	{
+		sense *= -1.0;
+		senseTime = t;
+	}
+
 	//	Particles update
 	fbos[1 - current_fbo_index].begin(false);
 
@@ -120,6 +132,7 @@ void SP_Particles::update()
 
 	update_shader.setUniform1f("elapsed", ofGetLastFrameTime());
 	update_shader.setUniform1f("radiusSquared", 250000.0f);
+	update_shader.setUniform1f("sense", sense);
 	update_shader.setUniform2f("resolution", ofVec2f(ofGetWidth(), ofGetHeight()));
 	update_shader.setUniform2fv("lHands", &lHands[0].x, 4);
 	update_shader.setUniform2fv("rHands", &rHands[0].x, 4);
@@ -188,7 +201,7 @@ void SP_Particles::initPositionTexture()
 			unsigned int index = y * x_dim + x;
 			initialPositionData[index * 4 + 0] = ofRandom(w);
 			initialPositionData[index * 4 + 1] = ofRandom(h);
-			initialPositionData[index * 4 + 2] = 0.0f;
+			initialPositionData[index * 4 + 2] = ofRandom(3.0, 12.0);
 			initialPositionData[index * 4 + 3] = 0.0f;
 		}
 	}

@@ -61,6 +61,9 @@ public:
 
 	glm::vec2 lHands[4], rHands[4];
 
+	float sense = 1.0;
+	float senseTime = 0.0;
+
 private:
 
 	//	Data

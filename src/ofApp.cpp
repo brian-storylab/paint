@@ -137,10 +137,11 @@ void ofApp::draw(){
 	particles.draw();
 
 	revealShader.begin();
-	revealShader.setUniform1f("radius", 0.01 + 0.14 * ofNoise(1.0 * t));
+	revealShader.setUniform1f("radius", 0.01 + 0.09 * ofNoise(1.0 * t));
 	revealShader.setUniformTexture("image", img.getTexture(), 0);
 	revealShader.setUniform2fv("lHands", &lHands[0].x, 4);
 	revealShader.setUniform2fv("rHands", &rHands[0].x, 4);
+	revealShader.setUniform2f("offset", sampleOffset);
 	revealShader.setUniform2f("lOffset", lHands[0] - sampleOffset);
 	revealShader.setUniform2f("rOffset", rHands[0] - sampleOffset);
 	revealShader.setUniform2f("res", w, h);

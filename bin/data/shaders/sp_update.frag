@@ -25,8 +25,8 @@ void main()
     vec3 col = texture(particles2, texCoordVarying.st).xyz;
 
     //  mass
-    float mass =  24.0 * col.z;
-	mass = clamp(mass, 6.0, 24.0);
+    float mass =  12.0 * col.z;
+	mass = clamp(mass, 3.0, 12.0) + pos.z;
 
     // attraction
     for(int i = 0; i < 4; ++i)
@@ -37,7 +37,7 @@ void main()
         float distSquared = dot(direction, direction);
         float magnitude = 2000.0 * (1.0 - distSquared / radiusSquared) / mass;
         vec2 force = step(distSquared, radiusSquared) * magnitude * normalize(direction);
-        vel.xy += elapsed * force;
+        vel.xy += sense * elapsed * force;
     }
 
     for(int i = 0; i < 4; ++i)
@@ -48,7 +48,7 @@ void main()
         float distSquared = dot(direction, direction);
         float magnitude = 2000.0 * (1.0 - distSquared / radiusSquared) / mass;
         vec2 force = step(distSquared, radiusSquared) * magnitude * normalize(direction);
-        vel.xy += elapsed * force;
+        vel.xy += sense * elapsed * force;
     }
     
     // bounce off the sides
@@ -65,7 +65,7 @@ void main()
 
     //  alpha
     float alpha = 0.667 * 0.01 * length(vel);
-    
+
     posOut = vec4(pos, 1.0);
     velOut = vec4(vel, 0.0);
     colOut = vec4(col, alpha);
