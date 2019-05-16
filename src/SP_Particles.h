@@ -34,7 +34,7 @@ public:
 	void setup(unsigned int x_count, unsigned int y_count, ofPrimitiveMode primitive_mode = OF_PRIMITIVE_POINTS, unsigned int num_textures = 4);
 	void update();
 	void draw();
-	void resize();
+	void resize(int width, int height);
 	void reset();
 	void reloadShaders();
 

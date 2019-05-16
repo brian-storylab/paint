@@ -94,8 +94,8 @@ void SP_Particles::setup(unsigned int x_count, unsigned int y_count, ofPrimitive
 	initSpeedTexture();
 
 	//  Interaction
-	scaleX = float(ofGetWidth()) / 512.0f;
-	scaleY = float(ofGetHeight()) / 424.0f;
+	scaleX = float(w) / 512.0f;
+	scaleY = float(h) / 424.0f;
 
 	targetPos = currentPos = ofPoint(0.5 * w, 0.5 * h, 0);
 }
@@ -133,7 +133,7 @@ void SP_Particles::update()
 	update_shader.setUniform1f("elapsed", ofGetLastFrameTime());
 	update_shader.setUniform1f("radiusSquared", 250000.0f);
 	update_shader.setUniform1f("sense", sense);
-	update_shader.setUniform2f("resolution", ofVec2f(ofGetWidth(), ofGetHeight()));
+	update_shader.setUniform2f("resolution", ofVec2f(w, h));
 	update_shader.setUniform2fv("lHands", &lHands[0].x, 4);
 	update_shader.setUniform2fv("rHands", &rHands[0].x, 4);
 
@@ -322,11 +322,14 @@ void SP_Particles::setAlphaFactor(float factor)
 }
 
 //--------------------------------------------------------------
-void SP_Particles::resize()
+void SP_Particles::resize(int width, int height)
 {
 	//	Data
-	w = ofGetWidth();
-	h = ofGetHeight();
+	w = width;
+	h = height;
+
+	scaleX = float(w) / 512.0f;
+	scaleY = float(h) / 424.0f;
 }
 
 //--------------------------------------------------------------
