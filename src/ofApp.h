@@ -53,6 +53,7 @@ private:
 	//	FBOs
 	//*********************************
 	ofFbo drawFbo;
+	ofFbo nebulaFbo;
 
 	//*********************************
 	//	Kinect
@@ -77,6 +78,9 @@ private:
 	//*********************************
 	ofShader revealShader;
 	string revealShaderPath;
+
+	ofShader nebulaShader;
+	string nebulaShaderPath;
 
 	//*********************************
 	//	Particles

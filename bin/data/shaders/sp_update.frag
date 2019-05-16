@@ -64,7 +64,7 @@ void main()
     pos += elapsed * vel;
 
     //  alpha
-    float alpha = 0.667 * 0.01 * length(vel);
+    float alpha = 0.5 * 0.01 * length(vel);
 
     posOut = vec4(pos, 1.0);
     velOut = vec4(vel, 0.0);

@@ -58,6 +58,8 @@ public:
 	ofColor color1;
 	ofColor color2;
 	ofColor color3;
+	ofColor color4;
+	ofColor color5;
 
 	glm::vec2 lHands[4], rHands[4];
 

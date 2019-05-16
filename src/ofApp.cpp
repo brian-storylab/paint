@@ -24,6 +24,7 @@ void ofApp::setup(){
 	//  FBOs
 	//*********************************
 	drawFbo.allocate(w, h, GL_RGBA32F_ARB);
+	nebulaFbo.allocate(w, h, GL_RGBA);
 
 	//*********************************
 	//	Kinect
@@ -52,13 +53,18 @@ void ofApp::setup(){
 	revealShaderPath = "shaders/reveal";
 	revealShader.load(revealShaderPath);
 
+	nebulaShaderPath = "shaders/nebula";
+	nebulaShader.load(nebulaShaderPath);
+
 	//*********************************
 	//	Particles
 	//*********************************
 	particles.setup(sp_x_dim, sp_y_dim);
-	particles.color1 = ofColor(54, 152, 163);
-	particles.color2 = ofColor(140, 68, 53);
-	particles.color3 = ofColor(60, 48, 91);
+	particles.color1 = ofColor(239, 119, 66);
+	particles.color2 = ofColor(20, 12, 44);
+	particles.color3 = ofColor(227, 204, 163);
+	particles.color4 = ofColor(147, 61, 60);
+	particles.color5 = ofColor(41, 16, 44);
 	particles.initColorTexture();
 }
 
@@ -129,7 +135,19 @@ void ofApp::draw(){
 	ofBackground(0);
 
 	//*********************************
-	//	Draw Main
+	//	Draw Textures
+	//*********************************
+	nebulaFbo.begin();
+	nebulaShader.begin();
+	nebulaShader.setUniform1f("iTime", t);
+	nebulaShader.setUniform2f("iMouse", 0, 0);
+	nebulaShader.setUniform2f("iResolution", w, h);
+	drawScreenPlane();
+	nebulaShader.end();
+	nebulaFbo.end();
+
+	//*********************************
+	//	Draw Interactions
 	//*********************************
 	drawFbo.begin();
 	drawFade();
@@ -137,8 +155,8 @@ void ofApp::draw(){
 	particles.draw();
 
 	revealShader.begin();
-	revealShader.setUniform1f("radius", 0.01 + 0.09 * ofNoise(1.0 * t));
-	revealShader.setUniformTexture("image", img.getTexture(), 0);
+	revealShader.setUniform1f("radius", 0.01 + 0.19 * ofNoise(1.0 * t));
+	revealShader.setUniformTexture("image", nebulaFbo.getTexture(), 0);
 	revealShader.setUniform2fv("lHands", &lHands[0].x, 4);
 	revealShader.setUniform2fv("rHands", &rHands[0].x, 4);
 	revealShader.setUniform2f("offset", sampleOffset);
@@ -186,7 +204,7 @@ void ofApp::drawScreenPlane() {
 void ofApp::drawFade() {
 
 	ofPushStyle();
-	ofSetColor(0, 0, 0, 1);
+	ofSetColor(ofFloatColor(0, 0, 0, 0.005));
 	ofDrawRectangle(0, 0, w, h);
 	ofPopStyle();
 }
@@ -197,8 +215,13 @@ void ofApp::keyPressed(int key){
 	switch (key)
 	{
 	case 'r':
+		//	Reload shaders
 		revealShader.unload();
 		revealShader.load(revealShaderPath);
+
+		nebulaShader.unload();
+		nebulaShader.load(nebulaShaderPath);
+
 		particles.reloadShaders();
 		break;
 	default:

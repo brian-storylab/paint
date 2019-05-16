@@ -38,15 +38,15 @@ void main()
 
         vec2 rPos = rHands[i] / res.xy;
         rPos.x *= res.x / res.y;
-        maxAlpha = max(maxAlpha, 1.0 - smoothstep(0.0, radius, length(rPos - uv)));
+        maxAlpha = max(maxAlpha, 1.0 - smoothstep(0.25 * radius, radius, length(rPos - uv)));
     }
 
     alpha = maxAlpha;
 
     //  Color sampling
     vec3 imageColor;
-    vec3 imageColorL = texture(image, gl_FragCoord.xy - lOffset).rgb;
-    vec3 imageColorR = texture(image, gl_FragCoord.xy - rOffset).rgb;
+    vec3 imageColorL = texture(image, gl_FragCoord.xy).rgb;
+    vec3 imageColorR = texture(image, gl_FragCoord.xy).rgb;
     imageColor = mix(imageColorL, imageColorR, 0.5);
 
     fragColor = vec4(imageColor, alpha);

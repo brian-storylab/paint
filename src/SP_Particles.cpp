@@ -234,9 +234,11 @@ void SP_Particles::initColorTexture()
 			float alpha = 0.1;
 			float random = ofRandom(1.0);
 
-			if (random < 0.333) color = color1;
-			else if (random < 0.667) color = color2;
-			else color = color3;
+			if (random < 0.2) color = color1;
+			else if (random < 0.4) color = color2;
+			else if (random < 0.6) color = color3;
+			else if (random < 0.8) color = color4;
+			else color = color5;
 
 			col_tex[index * 4 + 0] = color.r / 255.0;
 			col_tex[index * 4 + 1] = color.g / 255.0;
