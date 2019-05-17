@@ -4,6 +4,7 @@
 
 //	Addons
 #include "ofxKinectForWindows2.h"
+#include "ofxSpout.h"
 
 //	Project Headers
 #include "SP_Particles.h"
@@ -88,4 +89,9 @@ private:
 	SP_Particles particles;
 	const int sp_x_dim = 75;
 	const int sp_y_dim = 75;
+
+	//*********************************
+	//	Spout
+	//*********************************
+	ofxSpout::Sender spout;
 };

@@ -66,6 +66,11 @@ void ofApp::setup(){
 	particles.color4 = ofColor(147, 61, 60);
 	particles.color5 = ofColor(41, 16, 44);
 	particles.initColorTexture();
+
+	//*********************************
+	//	Spout
+	//*********************************
+	spout.init("paint");
 }
 
 //--------------------------------------------------------------
@@ -166,6 +171,11 @@ void ofApp::draw(){
 	drawScreenPlane();
 	revealShader.end();
 
+	ofPushStyle();
+	ofSetColor(255, 0, 0);
+	ofDrawCircle(0.5 * w, 0.5 * h, 100);
+	ofPopStyle();
+
 	drawFbo.end();
 	drawFbo.draw(0, 0);
 
@@ -173,6 +183,11 @@ void ofApp::draw(){
 	//	Interaction Test
 	//*********************************
 	//drawHands();
+
+	//*********************************
+	//	Spout
+	//*********************************
+	spout.send(drawFbo.getTexture());
 }
 
 //--------------------------------------------------------------
